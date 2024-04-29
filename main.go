@@ -1,25 +1,44 @@
 package main
 
+import "C"
 import (
 	"github.com/gin-gonic/gin"
 	"net/http"
+	"strconv"
 )
 
 func main() {
+
 	router := gin.Default()
 
-	router.GET("/test/:id", getAlbumByID)
+	router.GET("/cgo/:size/:loop", cgo)
+	router.GET("/fastcgo/:size/:loop", fastcgo)
 
-	router.Run("localhost:8080")
+	router.Run(":8081")
+
 }
 
-func getAlbumByID(c *gin.Context) {
-	id := c.Param("id")
-
-	if true {
-		c.IndentedJSON(http.StatusOK, "-----------------------------------------"+id)
-		return
+func cgo(c *gin.Context) {
+	str_size := c.Param("size")
+	str_loop := c.Param("loop")
+	size, _ := strconv.Atoi(str_size)
+	loop, _ := strconv.Atoi(str_loop)
+	sum := 0
+	for i := 0; i < loop; i++ {
+		sum += MultMatrix(size)
 	}
+	c.IndentedJSON(http.StatusOK, sum)
 
-	c.IndentedJSON(http.StatusNotFound, gin.H{"message": "album not found"})
+}
+
+func fastcgo(c *gin.Context) {
+	str_size := c.Param("size")
+	str_loop := c.Param("loop")
+	size, _ := strconv.Atoi(str_size)
+	loop, _ := strconv.Atoi(str_loop)
+	sum := 0
+	for i := 0; i < loop; i++ {
+		sum += int(FastCMultMatrix(C.size_t(size)))
+	}
+	c.IndentedJSON(http.StatusOK, sum)
 }
