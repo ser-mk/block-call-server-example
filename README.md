@@ -19,7 +19,7 @@ You can easily test it by running the server and sending payloads to it.
 
 ```shell
 # terminal 1
-go build -gcflags="fastc-example-server=-std" -o ./server && ./server
+go build -o ./server && ./server
 ```
 To test the server, simply run it and send requests to it using a tool like Apache Benchmark (ab).
 
