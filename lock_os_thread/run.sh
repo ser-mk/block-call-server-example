@@ -1,0 +1,1 @@
+go run -gcflags=-std main.go mult.go 
