@@ -1,11 +1,11 @@
 package main
 
-import "C"
 import (
 	"fmt"
 	"runtime"
 	"sort"
 	"sync"
+	"testing"
 	"time"
 )
 
@@ -42,7 +42,7 @@ func Cloop(count int, loop int, size int, fast bool) {
 			t := time.Now().UnixMicro()
 			if fast {
 				for i := 0; i < loop; i++ {
-					_ = FastCMultMatrix(C.size_t(size))
+					_ = FastCMultMatrix(size)
 				}
 			} else {
 				for i := 0; i < loop; i++ {
@@ -60,7 +60,8 @@ func Cloop(count int, loop int, size int, fast bool) {
 	fmt.Println("sum \t=", time.Now().UnixMicro()-t1)
 }
 
-func main() {
+func TestLockOSThread(t *testing.T) {
+
 	var count = runtime.GOMAXPROCS(0)
 	const size = 222
 	const loop = 44

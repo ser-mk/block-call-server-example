@@ -1,4 +1,4 @@
-package main
+package trivial_func
 
 import (
 	"fmt"
