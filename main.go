@@ -38,7 +38,7 @@ func fastcgo(c *gin.Context) {
 	loop, _ := strconv.Atoi(str_loop)
 	sum := 0
 	for i := 0; i < loop; i++ {
-		sum += int(FastCMultMatrix(C.size_t(size)))
+		sum += FastCMultMatrix(size)
 	}
 	c.IndentedJSON(http.StatusOK, sum)
 }
