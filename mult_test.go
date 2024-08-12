@@ -11,6 +11,12 @@ func ExampleMult() {
 	// Output: -7700
 }
 
+func ExampleAsmMult() {
+	r := AsmcgocallMultMatrix(11)
+	fmt.Println(r)
+	// Output: -7700
+}
+
 func ExampleFastMult() {
 	r := WithoutCGOMultMatrix(11)
 	fmt.Println(r)

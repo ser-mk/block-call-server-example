@@ -71,6 +71,7 @@ fast_C_mult_matrix(Mult_Args *args)
 */
 import "C"
 import "unsafe"
+import "fastc-example-server/asmcgocaller"
 
 func CGOMultMatrix(size int) int {
 	return int(C.mult_matrix(C.int(size)))
@@ -84,6 +85,16 @@ func asmcgocall(unsafe.Pointer, uintptr) int32
 func WithoutCGOMultMatrix(size int) int {
 	args := C.Mult_Args{C.int(size), 0}
 	asmcgocall(C.fast_C_mult_matrix, uintptr(unsafe.Pointer(&args)))
+	if _Cgo_always_false {
+		_Cgo_use(args)
+	}
+	return int(args.result)
+}
+
+//go:nosplit
+func AsmcgocallMultMatrix(size int) int {
+	args := C.Mult_Args{C.int(size), 0}
+	asmcgocaller.Asmcgocall(C.fast_C_mult_matrix, unsafe.Pointer(&args))
 	if _Cgo_always_false {
 		_Cgo_use(args)
 	}
