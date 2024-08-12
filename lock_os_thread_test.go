@@ -42,11 +42,11 @@ func Cloop(count int, loop int, size int, fast bool) {
 			t := time.Now().UnixMicro()
 			if fast {
 				for i := 0; i < loop; i++ {
-					_ = FastCMultMatrix(size)
+					_ = WithoutCGOMultMatrix(size)
 				}
 			} else {
 				for i := 0; i < loop; i++ {
-					_ = MultMatrix(size)
+					_ = CGOMultMatrix(size)
 				}
 			}
 			timeArray[i] = int(time.Now().UnixMicro() - t)

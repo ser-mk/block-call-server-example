@@ -7,7 +7,7 @@ package main
 
 #define MAX_SIZE 300
 
-int mult_matrix(size_t test_size){
+int mult_matrix(int test_size){
 
 int a[MAX_SIZE][MAX_SIZE],
 	b[MAX_SIZE][MAX_SIZE],
@@ -72,8 +72,8 @@ fast_C_mult_matrix(Mult_Args *args)
 import "C"
 import "unsafe"
 
-func MultMatrix(size int) int {
-	return int(C.mult_matrix(C.size_t(size)))
+func CGOMultMatrix(size int) int {
+	return int(C.mult_matrix(C.int(size)))
 }
 
 //go:linkname asmcgocall runtime.asmcgocall
@@ -81,7 +81,7 @@ func MultMatrix(size int) int {
 func asmcgocall(unsafe.Pointer, uintptr) int32
 
 //go:nosplit
-func FastCMultMatrix(size int) int {
+func WithoutCGOMultMatrix(size int) int {
 	args := C.Mult_Args{C.int(size), 0}
 	asmcgocall(C.fast_C_mult_matrix, uintptr(unsafe.Pointer(&args)))
 	if _Cgo_always_false {
