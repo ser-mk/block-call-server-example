@@ -64,6 +64,7 @@ func Cloop(count int, loop int, size int, fast bool) {
 	fmt.Println("time with delay of every gorutine:", timeWithWait)
 	sort.Slice(timeWithWait, func(i, j int) bool { return timeWithWait[i] < timeWithWait[j] })
 	fmt.Println("sort time with delay of every gorutine:", timeWithWait)
+	fmt.Println("")
 }
 
 func TestLockOSThread(t *testing.T) {
@@ -74,29 +75,30 @@ func TestLockOSThread(t *testing.T) {
 	const more = 5
 
 	count = runtime.GOMAXPROCS(0)
-	fmt.Println("===== GORUTINE EQUAL PROCS ======", count)
+	fmt.Println(fmt.Sprintf("===== CGO Call, GORUTINE %d , PROCS %d , LockOSThread OFF ======", count, runtime.GOMAXPROCS(0)))
 	Cloop(count, loop, size, false)
 
 	count = count * more
-	fmt.Println("===== GORUTINE MORE MORE PROCS ======", count)
+	fmt.Println(fmt.Sprintf("===== CGO Call,  GORUTINE %d , PROCS %d , LockOSThread OFF ======", count, runtime.GOMAXPROCS(0)))
 	Cloop(count, loop, size, false)
 
 	// https://github.com/golang/go/issues/21827
 	runtime.LockOSThread()
-	fmt.Println("===== GORUTINE MORE MORE PROCS AND LockOSThread ======", count)
+	fmt.Println(fmt.Sprintf("===== CGO Call,  GORUTINE %d , PROCS %d , LockOSThread ON ======", count, runtime.GOMAXPROCS(0)))
 	Cloop(count, loop, size, false)
 
 	count = runtime.GOMAXPROCS(0)
-	fmt.Println("===== GORUTINE EQUAL PROCS AND LockOSThread ======", count)
+	fmt.Println(fmt.Sprintf("===== CGO Call,  GORUTINE %d , PROCS %d , LockOSThread ON ======", count, runtime.GOMAXPROCS(0)))
+
 	Cloop(count, loop, size, false)
 
 	runtime.UnlockOSThread()
 
-	fmt.Println("===== Fast C ======", count)
+	fmt.Println(fmt.Sprintf("===== Without CGO Call,  GORUTINE %d , PROCS %d ======", count, runtime.GOMAXPROCS(0)))
 	Cloop(count, loop, size, true)
 
 	count = count * more
-	fmt.Println("===== Fast C ======", count)
+	fmt.Println(fmt.Sprintf("===== Without CGO Call,  GORUTINE %d , PROCS %d ======", count, runtime.GOMAXPROCS(0)))
 	Cloop(count, loop, size, true)
 
 }

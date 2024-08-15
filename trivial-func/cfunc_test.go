@@ -14,7 +14,7 @@ func BenchmarkCGO(b *testing.B) {
 
 func BenchmarkFastCGO(b *testing.B) {
 	for i := 0; i < b.N; i++ {
-		fast_cgo_trivial(1)
+		fast_trivial(1)
 	}
 }
 
@@ -37,7 +37,7 @@ func BenchmarkCGO_timer(b *testing.B) {
 func BenchmarkFastCGO_timer(b *testing.B) {
 	for i := 0; i < b.N; i++ {
 		b.StartTimer()
-		fast_cgo_trivial(1)
+		fast_trivial(1)
 		b.StopTimer()
 	}
 }
@@ -83,7 +83,7 @@ func TestBenchFastCGO_clearCache(t *testing.T) {
 	sum = 0
 	for i := 0; i < N; i++ {
 		t := nanotime()
-		fast_cgo_trivial(1)
+		fast_trivial(1)
 		sum += nanotime() - t
 		clear()
 	}

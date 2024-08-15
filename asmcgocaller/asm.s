@@ -33,7 +33,7 @@
 #endif
 
 
-// func asmcgocall(fn, arg unsafe.Pointer) int32
+// func Asmcgocall(fn, arg unsafe.Pointer) int32
 TEXT	·Asmcgocall(SB), NOSPLIT, $0-32
 	JMP	runtime·asmcgocall(SB)
 
