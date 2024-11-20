@@ -1,5 +1,6 @@
 from collections import defaultdict
 import matplotlib.pyplot as plt
+import numpy as np
 
 filename = "hist-log-prenet.log"
 
@@ -16,17 +17,17 @@ for line in lines:
     if len(parts) >= 3:
         time_str = parts[2]
         if '/fastcgo' in parts[4]:
-            times['fastcgo'].append(float(time_str[:-2]) * 1e-3 if time_str.endswith('ms') else float(time_str[:-2]) * 1e-6)
+            times['fastcgo'].append(float(time_str[:-2]) * 1e+3 if time_str.endswith('ms') else float(time_str[:-2]))
         elif '/cgo' in parts[4]:
-            times['cgo'].append(float(time_str[:-2]) * 1e-3 if time_str.endswith('ms') else float(time_str[:-2]) * 1e-6)
+            times['cgo'].append(float(time_str[:-2]) * 1e+3 if time_str.endswith('ms') else float(time_str[:-2]) )
 
 
 for key, value in times.items():
-    plt.hist(value, bins=100, alpha=0.5, label=key, #range=(0, 0.001)
+    plt.hist(value, bins=14, alpha=0.5, label=key, range=(0, 8000)
     )
 
 
-plt.xlabel('Time (s)')
+plt.xlabel('Time (us)')
 plt.ylabel('Frequency')
 plt.title('Histogram of Response Times')
 plt.legend()
