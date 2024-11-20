@@ -12,7 +12,7 @@ func main() {
 	router := gin.Default()
 
 	router.GET("/cgo/:size/:loop", func(c *gin.Context) { mult(c, true) })
-	router.GET("/fastcgo/:size/:loop", func(c *gin.Context) { mult(c, false) })
+	router.GET("/blockcall/:size/:loop", func(c *gin.Context) { mult(c, false) })
 
 	router.Run(":8081")
 }

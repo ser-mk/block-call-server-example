@@ -16,8 +16,8 @@ for line in lines:
     parts = line.split(' | ')
     if len(parts) >= 3:
         time_str = parts[2]
-        if '/fastcgo' in parts[4]:
-            times['fastcgo'].append(float(time_str[:-2]) * 1e+3 if time_str.endswith('ms') else float(time_str[:-2]))
+        if '/blockcall' in parts[4]:
+            times['blockcall'].append(float(time_str[:-2]) * 1e+3 if time_str.endswith('ms') else float(time_str[:-2]))
         elif '/cgo' in parts[4]:
             times['cgo'].append(float(time_str[:-2]) * 1e+3 if time_str.endswith('ms') else float(time_str[:-2]) )
 
