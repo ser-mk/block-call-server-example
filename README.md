@@ -25,6 +25,17 @@ To test the server, simply run it and send requests to it using a tool like Apac
 
 ```shell
 # terminal 2
+bash tests/run_once.sh $requests $concurrency $size $loop
+```
+$requests - Number of multiple requests to perform at a time. Default is one request at a time.
+$concurrency - Number of requests to perform for the benchmarking session. The default is to just perform a single request which usually leads to non-representative benchmarking results.
+$size - size of calculation matrix
+$loop - times of matrix calculation
+
+for example:
+
+```shell
+# terminal 2
 bash tests/run_once.sh 200 10 62 2
 ```
 
