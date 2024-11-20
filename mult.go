@@ -7,7 +7,7 @@ package main
 
 #define MAX_SIZE 300
 
-int mult_matrix(size_t test_size){
+int mult_matrix(int test_size){
 
 int a[MAX_SIZE][MAX_SIZE],
 	b[MAX_SIZE][MAX_SIZE],
@@ -58,30 +58,23 @@ int a[MAX_SIZE][MAX_SIZE],
 
 }
 
-
-extern char* _cgo_topofstack(void);
+typedef struct {
+		int size;
+		int result;
+	} Mult_Args;
 
 void
-fast_C_mult_matrix(void *v)
+fast_C_mult_matrix(Mult_Args *args)
 {
-	struct {
-		size_t p0;
-		int r;
-		char __pad12[4];
-	} __attribute__((__packed__, __gcc_struct__)) *_cgo_a = v;
-	char *_cgo_stktop = _cgo_topofstack();
-	__typeof__(_cgo_a->r) _cgo_r;
-	_cgo_r = mult_matrix(_cgo_a->p0);
-	_cgo_a = (void*)((char*)_cgo_a + (_cgo_topofstack() - _cgo_stktop));
-	_cgo_a->r = _cgo_r;
+	args->result = mult_matrix(args->size);
 }
-
 */
 import "C"
 import "unsafe"
+import "fastc-example-server/asmcgocaller"
 
-func MultMatrix(size int) int {
-	return int(C.mult_matrix(C.size_t(size)))
+func CGOMultMatrix(size int) int {
+	return int(C.mult_matrix(C.int(size)))
 }
 
 //go:linkname asmcgocall runtime.asmcgocall
@@ -89,11 +82,21 @@ func MultMatrix(size int) int {
 func asmcgocall(unsafe.Pointer, uintptr) int32
 
 //go:nosplit
-//go:cgo_unsafe_args
-func FastCMultMatrix(p0 C.size_t) (r1 C.int) {
-	asmcgocall(C.fast_C_mult_matrix, uintptr(unsafe.Pointer(&p0)))
+func WithoutCGOMultMatrix(size int) int {
+	args := C.Mult_Args{C.int(size), 0}
+	asmcgocall(C.fast_C_mult_matrix, uintptr(unsafe.Pointer(&args)))
 	if _Cgo_always_false {
-		_Cgo_use(p0)
+		_Cgo_use(args)
 	}
-	return
+	return int(args.result)
+}
+
+//go:nosplit
+func AsmcgocallMultMatrix(size int) int {
+	args := C.Mult_Args{C.int(size), 0}
+	asmcgocaller.Asmcgocall(C.fast_C_mult_matrix, unsafe.Pointer(&args))
+	if _Cgo_always_false {
+		_Cgo_use(args)
+	}
+	return int(args.result)
 }
